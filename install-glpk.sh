@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# replace with yuor preferred version of glpk
+wget http://ftp.gnu.org/gnu/glpk/glpk-4.62.tar.gz
+
+#leave thigns under here alone
+
 shopt -s nullglob
 array=(glpk*.tar.gz)
 
