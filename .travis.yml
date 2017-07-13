@@ -1,6 +1,5 @@
 dist: trusty
 language: python
-env: GLPK_VERSION=4.62
 matrix:
     include:
         - python: 2.7
@@ -24,8 +23,9 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
 
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pytest glpk=$GLPK_VERSION
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pytest
   - source activate test-environment
+  - ./install-glpk.sh
 # command to run tests
 script: 
   - pytest
