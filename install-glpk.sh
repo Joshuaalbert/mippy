@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # replace with yuor preferred version of glpk
-wget -N -nc http://ftp.gnu.org/gnu/glpk/glpk-4.62.tar.gz
+wget -nc http://ftp.gnu.org/gnu/glpk/glpk-4.62.tar.gz
 
 #leave thigns under here alone
 
