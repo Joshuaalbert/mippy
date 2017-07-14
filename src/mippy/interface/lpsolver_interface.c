@@ -1,40 +1,30 @@
+//#include <Python.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <glpk.h>
 #include <time.h>
 
-#define NO_FILE 1
-#define NO_ARGS 2
-#define FAIL_MOD 3
 #define SIMP 4
 #define MIP 5
 #define INTERIOR 6
 
-int make_mps (int argc, char **argv)
+const char* lpsolve (char *mippy_file, char *mod_name, int solve_type)
 {
 	FILE *file;
 	char str[256];
-	if (argc == 1)
-	{
-		printf("Usage: %s <model from mod_make.py> <model_name> <solution_type>\n",argv[0]);
-		printf("solution_type:\n %d - Simplex\n %d - Mix Integer\n %d - Interior Branch Cut (dysfunct)\n", SIMP, MIP, INTERIOR);
-		return NO_ARGS;
-	}
-	file = fopen(argv[1],"r");
+	file = fopen(mippy_file,"r");
 	if (file == NULL)
 	{
-		printf("%s does not exist\n",argv[1]);
-		return NO_FILE;
+		printf("%s does not exist\n",mippy_file);
+		return NULL;
 	}
-	int solve_type;
-	sscanf(argv[3],"%d",&solve_type);
 	int nrows, ncols, row, col;
 	double val,upper,lower,fixed,*ar;
 	unsigned long count;
 	int *ia, *ja, *coltype;
 	glp_prob *lp;
 	lp = glp_create_prob();
-	glp_set_prob_name(lp,argv[2]);
+	glp_set_prob_name(lp,mod_name);
 	count = 1;
 	while (fgets(str,256,file))
 	{
@@ -157,7 +147,7 @@ int make_mps (int argc, char **argv)
 	iocp.msg_lev=GLP_MSG_ALL;
 	glp_load_matrix(lp,count-1,ia,ja,ar);
 	char mod_file[50];
-	sprintf(mod_file,"%s.mps",argv[2]);
+	sprintf(mod_file,"%s.mps",mod_name);
 	printf("MPS model in: %s\n", mod_file);
 	glp_write_mps(lp,GLP_MPS_FILE,NULL,mod_file);
 	int glpk_solve;
@@ -173,7 +163,7 @@ int make_mps (int argc, char **argv)
 		//	glp_exact(lp,&smcp);
 		//	printf("Simplex Obj: %f\n",glp_get_obj_val(lp));
 			
-			sprintf(mod_results,"%s.simplex.lpsol",argv[2]);
+			sprintf(mod_results,"%s.simplex.lpsol",mod_name);
 			file=fopen(mod_results,"w+");
 			for (int i=1;i<=ncols;++i)
 			{
@@ -186,7 +176,7 @@ int make_mps (int argc, char **argv)
 			glp_intopt(lp,&iocp);
 		//	printf("Obj: %f\n",glp_mip_obj_val(lp));
 			
-			sprintf(mod_results,"%s.mip.lpsol",argv[2]);
+			sprintf(mod_results,"%s.mip.lpsol",mod_name);
 			file=fopen(mod_results,"w+");
 			for (int i=1;i<=ncols;++i)
 			{
@@ -212,7 +202,7 @@ int make_mps (int argc, char **argv)
 		case INTERIOR:
 			glp_interior(lp,&iptcp);
 			
-			sprintf(mod_results,"%s.interior.lpsol",argv[2]);
+			sprintf(mod_results,"%s.interior.lpsol",mod_name);
 			file=fopen(mod_results,"w+");
 			for (int i=1;i<=ncols;++i)
 			{
@@ -229,10 +219,37 @@ int make_mps (int argc, char **argv)
 	
 	free(ia),free(ja),free(ar);free(coltype);
 	glp_delete_prob(lp);
-	return 0;
+	return mod_results;
 }
+
+/*
+static PyObject *
+lpsolver_lpsolve( PyObject *self, PyObject *args){
+	const char *mippy_file, char *mod_name;
+	int solve_type;
+	if (!PyArg_ParseTuple(args,"s s i", &mippy_file, &mod_name, &solve_type))
+		return NULL;
+	char *mod_results = lpsolve (mippy_file, mod_name, solve_type);
+	return Py_BuildValue("s",mod_results);
+}
+*/
+	
+
+
 
 int  main(int argc, char **argv)
 {
-	return make_mps (argc,argv);
+	if (argc != 4)
+	{
+		printf("Usage: %s <model from mod_make.py> <model_name> <solution_type>\n",argv[0]);
+		printf("solution_type:\n %d - Simplex\n %d - Mix Integer\n %d - Interior Branch Cut (dysfunct)\n", SIMP, MIP, INTERIOR);
+		return 1;
+	}
+
+	char *mippy_file = argv[1];
+	char *mod_name = argv[2];
+	int solve_type;
+	sscanf(argv[3],"%d",&solve_type);
+	lpsolve (mippy_file, mod_name, solve_type);
+	return 0;
 }

@@ -191,21 +191,30 @@ class LPSolver(object):
         '''Submit the problem that was compiled into mippy_file.
         Return the solution of each variable.'''
         if self.solver_type == 'SIMP':
-            os.system("{:s}/lpsolver_interface {:s}  {:s} {:d}".format(mippy.interface.__path__[0], mippy_file, self.problem_name, 4))
+            os.system("lpsolver_interface {:s}  {:s} {:d}".format(mippy_file, self.problem_name, 4))
         if self.solver_type == 'MIP':
-            os.system("{:s}/lpsolver_interface {:s}  {:s} {:d}".format(mippy.interface.__path__[0], mippy_file, self.problem_name, 5))
+            os.system("lpsolver_interface {:s}  {:s} {:d}".format(mippy_file, self.problem_name, 5))
+        return self.retrieve_results()
+        
 
     def retrieve_results(self):
         '''Assumes the name will be given by lpsolver_interface'''
+        if self.solver_type == 'SIMP':
+            result_file = "{}.{}.lpsol".format(self.problem_name,'simplex')
+        if self.solver_type == 'MIP':
+            result_file = "{}.{}.lpsol".format(self.problem_name,'mip')
+        data = np.loadtxt(result_file)[:,1]
+        return data
+
         
 
 if __name__ == '__main__':
     import numpy as np
-    rows = 5
-    cols = 5
+    rows = 500
+    cols = 50
     A_eq = np.random.normal(size=[rows,cols])
-    b_eq = np.random.normal(size=cols)
-    print(np.linalg.inv(A_eq).dot(b_eq))
+    b_eq = np.random.normal(size=rows)
+    #print(np.linalg.inv(A_eq).dot(b_eq))
     A_lt = None
     b_lt = None
     A_gt = None
