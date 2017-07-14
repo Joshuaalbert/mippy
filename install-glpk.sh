@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # replace with yuor preferred version of glpk
-wget http://ftp.gnu.org/gnu/glpk/glpk-4.62.tar.gz
+wget -N -nc http://ftp.gnu.org/gnu/glpk/glpk-4.62.tar.gz
 
 #leave thigns under here alone
 
@@ -18,6 +18,7 @@ root=$(pwd)
 cd ${dir} && ./configure --prefix=${root}/local
 make && make install
 
-echo Compiling interface
-cd ${root}/mippy/interface && make
+#done in setup.py
+#echo Compiling interface
+#cd ${root}/src/mippy/interface && make
 
