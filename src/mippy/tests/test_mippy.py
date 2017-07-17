@@ -19,6 +19,19 @@ def test_lpsolver():
     print("Comparing solutions {} ? {}".format(result,sol))
     assert np.allclose(result,sol)
 
+    A_lt = np.array([[1,2],[3,1]])
+    b_lt = np.array([1,2])
+    c_obj = np.array([0.6,0.5])
+    l = LPSolver(None, None, A_lt, b_lt, None, None, c_obj, True, "TEST2", 'SIMP')
+    #l.set_variable_type(0,'i',('<>',0,1))
+    #l.set_variable_type(1,'i',('<>',0,1))
+    prob = l.compile()
+    result = l.submit_problem(prob)
+    sol = np.array([0.6, 0.2])
+    print("Comparing solutions {} ? {}".format(result,sol))
+    assert np.allclose(result,sol)
+
+
     rows = 2
     cols = 2
     A_eq = None
@@ -28,7 +41,7 @@ def test_lpsolver():
     A_lt = np.array([[2,3,1]])
     b_lt = np.array([0])
     maximize = True
-    problem_name = "TEST"
+    problem_name = "TEST3"
     c_obj = np.array([0,0,1])
     l = LPSolver(A_eq, b_eq, A_lt, b_lt, A_gt, b_gt, c_obj, maximize, problem_name, 'MIP')
     l.set_variable_type(0,'i',('<>',-1,1))
@@ -36,4 +49,4 @@ def test_lpsolver():
     l.set_variable_type(2,'i',('<>',-3,3))
     prob = l.compile()
     result = l.submit_problem(prob)
-    print(result)
+    #print(result)
