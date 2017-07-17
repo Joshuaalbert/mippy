@@ -137,6 +137,8 @@ class LPSolver(object):
             self.variable_bounds[col] = bounds
 
     def compile(self):
+        """Compile the program into a file that can be submitted.
+        Returns the filename which can be used by `submit_problem`"""
         mippy_file = "{}.mippy".format(self.problem_name)
         f = open(mippy_file,"w+")
         # max or mix problem
