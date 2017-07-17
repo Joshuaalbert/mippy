@@ -241,7 +241,7 @@ int  main(int argc, char **argv)
 {
 	if (argc != 4)
 	{
-		printf("Usage: %s <model from mod_make.py> <model_name> <solution_type>\n",argv[0]);
+		printf("Usage: %s <model from LPSolver.compile> <model_name> <solution_type>\n",argv[0]);
 		printf("solution_type:\n %d - Simplex\n %d - Mix Integer\n %d - Interior Branch Cut (dysfunct)\n", SIMP, MIP, INTERIOR);
 		return 1;
 	}
