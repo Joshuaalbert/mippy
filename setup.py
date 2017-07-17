@@ -3,7 +3,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-#import mippy
+import mippy
 
 import os
 from setuptools import setup
