@@ -205,7 +205,10 @@ class LPSolver(object):
             result_file = "{}.{}.lpsol".format(self.problem_name,'simplex')
         if self.solver_type == 'MIP':
             result_file = "{}.{}.lpsol".format(self.problem_name,'mip')
-        data = np.loadtxt(result_file)[:,1]
-        return data
+        data = np.loadtxt(result_file)
+        if len(data.shape) == 1:
+            return [data[1]]
+        else:
+            return data[:,1]
 
  
