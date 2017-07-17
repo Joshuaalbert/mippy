@@ -3,7 +3,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-import mippy
+#import mippy
 
 import os
 from setuptools import setup
@@ -31,7 +31,7 @@ class LPSolverInstall(install):
         super(LPSolverInstall,self).run()
 
 
-setup_requires = ['numpy>=' + mippy.__minimum_numpy_version__]
+setup_requires = ['numpy>=' + mippy.__minimum_numpy_version__, 'astropy']
 
 setup(name='mippy',
       version='0.0.1',
