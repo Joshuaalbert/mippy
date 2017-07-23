@@ -23,7 +23,7 @@ def compile_and_install_software():
     subprocess.check_call('make', cwd=src_path, shell=True)
 
 
-class LPSolverInstall(install):
+class LPSolverInstall(install, object):
     """Custom handler for the 'install' command."""
     def run(self):
         compile_and_install_software()
