@@ -3,13 +3,12 @@
 from setuptools import setup
 from setuptools import find_packages
 
-import mippy
-
 import os
 from setuptools import setup
 from setuptools.command.install import install
 import subprocess
 
+__minimum_numpy_version__ = '1.9.0'
 
 def compile_and_install_software():
     """Use the subprocess module to compile/install the C software."""
@@ -31,7 +30,7 @@ class LPSolverInstall(install):
         super(LPSolverInstall,self).run()
 
 
-setup_requires = ['numpy>=' + mippy.__minimum_numpy_version__, 'astropy']
+setup_requires = ['numpy>=' + __minimum_numpy_version__, 'astropy']
 
 setup(name='mippy',
       version='0.0.1',
