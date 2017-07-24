@@ -183,7 +183,8 @@ class LPSolver(object):
             # set the row
             col = 0
             while col < self.num_variables:
-                f.write("A {:d} {:d} {:0.15f}\n".format(row+1,col+1,self.A[row][col]))
+                if self.A[row][col] != 0.:
+                    f.write("A {:d} {:d} {:0.15f}\n".format(row+1,col+1,self.A[row][col]))
                 col += 1
             row += 1
         f.close()
