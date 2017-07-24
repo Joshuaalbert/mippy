@@ -164,7 +164,8 @@ class LPSolver(object):
         #declare objective function
         col = 0
         while col < self.num_variables:
-            f.write("C {:d} {:0.15f}\n".format(col+1, self.objective[col]))
+            if self.objective[col] != 0:
+                f.write("C {:d} {:0.15f}\n".format(col+1, self.objective[col]))
             col += 1
         #declare constraint matrix and bounds
         row = 0
