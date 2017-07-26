@@ -188,7 +188,7 @@ static PyObject *lpsolve (PyObject *self, PyObject *args)
 	glp_load_matrix(lp,count-1,ia,ja,ar);
 	char mod_file[50];
 	sprintf(mod_file,"%s.mps",problem_name);
-	printf("MPS model in: %s\n", mod_file);
+	//printf("MPS model in: %s\n", mod_file);
 	//glp_write_mps(lp,GLP_MPS_FILE,NULL,mod_file);
 		switch (solve_type)
 	{

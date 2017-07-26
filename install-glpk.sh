@@ -15,7 +15,7 @@ dir=${newest%.tar.gz}
 tar xzf ${newest}
 
 root=$(pwd)
-cd ${dir} && ./configure --prefix=${root}/local
+cd ${dir} && ./configure --with-pic --prefix=${root}/local
 make && make install
 
 #done in setup.py
