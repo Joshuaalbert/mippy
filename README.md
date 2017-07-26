@@ -3,11 +3,14 @@ Mixed Integer Programming Solver interface from Python
 
 ### Install (Linux)
 ```
+# ensure you have python-dev. On fedora 25 you might do
+sudo dnf install python-devel
+# on Ubunutu
+sudo apt-get install python-dev
+
 git clone https://github.com/Joshuaalbert/mipp.git
 cd mippy
-./install-glpk.sh
 python setup.py install
-export PATH=$(pwd)/src/mippy/interface:${PATH}
 
 #test with
 pytest
