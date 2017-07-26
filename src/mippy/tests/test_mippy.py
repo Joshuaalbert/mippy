@@ -6,27 +6,23 @@ def test_lpsolver():
     A_eq = np.random.normal(size=[rows,cols])
     b_eq = np.random.normal(size=rows)
     sol = np.linalg.inv(A_eq).dot(b_eq)
-    A_lt = None
-    b_lt = None
-    A_gt = None
-    b_gt = None
     maximize = True
     problem_name = "TEST"
     c_obj = np.zeros(cols)
-    l = LPSolver(A_eq, b_eq, A_lt, b_lt, A_gt, b_gt, c_obj, maximize, problem_name, 'SIMP')
-    prob = l.compile()
-    result = l.submit_problem(prob)
+    l = LPSolver(c_obj,A_eq = A_eq, b_eq = b_eq, maximize=maximize, problem_name=problem_name, solver_type='SIMP')
+    l.compile()
+    result = l.submit_problem()
     print("Comparing solutions {} ? {}".format(result,sol))
     assert np.allclose(result,sol)
 
     A_lt = np.array([[1,2],[3,1]])
     b_lt = np.array([1,2])
     c_obj = np.array([0.6,0.5])
-    l = LPSolver(None, None, A_lt, b_lt, None, None, c_obj, True, "TEST2", 'SIMP')
+    l = LPSolver(c_obj,A_lt=A_lt, b_lt = b_lt, maximize=True, problem_name="TEST2", solver_type='SIMP')
     #l.set_variable_type(0,'i',('<>',0,1))
     #l.set_variable_type(1,'i',('<>',0,1))
-    prob = l.compile()
-    result = l.submit_problem(prob)
+    l.compile()
+    result = l.submit_problem()
     sol = np.array([0.6, 0.2])
     print("Comparing solutions {} ? {}".format(result,sol))
     assert np.allclose(result,sol)
@@ -34,8 +30,6 @@ def test_lpsolver():
 
     rows = 2
     cols = 2
-    A_eq = None
-    b_eq = None
     A_gt = np.array([[1,2,3]])
     b_gt = np.array([1])
     A_lt = np.array([[2,3,1]])
@@ -43,10 +37,10 @@ def test_lpsolver():
     maximize = True
     problem_name = "TEST3"
     c_obj = np.array([0,0,1])
-    l = LPSolver(A_eq, b_eq, A_lt, b_lt, A_gt, b_gt, c_obj, maximize, problem_name, 'MIP')
+    l = LPSolver(c_obj,A_lt=A_lt, b_lt=b_lt,A_gt= A_gt, b_gt=b_gt,  maximize=maximize, problem_name=problem_name, solver_type='MIP')
     l.set_variable_type(0,'i',('<>',-1,1))
     l.set_variable_type(1,'i',('<>',-2,2))
     l.set_variable_type(2,'i',('<>',-3,3))
-    prob = l.compile()
-    result = l.submit_problem(prob)
+    l.compile()
+    result = l.submit_problem()
     #print(result)

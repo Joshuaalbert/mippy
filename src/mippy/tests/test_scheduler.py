@@ -107,14 +107,14 @@ def test_scheduler():
     A_gt = None#np.array(A_gt)
     b_gt = None#np.array(b_gt)
 
-    l = LPSolver(A_eq, b_eq, A_lt, b_lt, A_gt, b_gt, c_obj, maximize, problem_name, 'MIP')
+    l = LPSolver(c_obj,A_eq = A_eq, b_eq = b_eq, A_lt=A_lt, b_lt=b_lt, A_gt=A_gt, b_gt=b_gt, maximize=maximize, problem_name=problem_name, solver_type='MIP')
     for i in range(Ni):
         for j in range(Nj):
             for k in range(Nk):
                 idx = h(i,j,k)
                 l.set_variable_type(idx,'i',('<>',0.,1.))
-    prob = l.compile()
-    result = l.submit_problem(prob)
+    l.compile()
+    result = l.submit_problem()
 
     # Printing of results and testing validity
     print("Result is:".format(result))
